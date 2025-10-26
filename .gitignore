@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ignora pastas que você não quer no GitHub
+.mvn/
+mvnw
+mvnw.cmd
+.gitattributes
+.gitignore
+README.md
