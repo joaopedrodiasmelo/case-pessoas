@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Avaliacao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Case-Pessoas</a> &gt; <a href="index.source.html" class="el_package">com.pessoas.Case.Pessoas.domain.model</a> &gt; <span class="el_source">Avaliacao.java</span></div><h1>Avaliacao.java</h1><pre class="source lang-java linenums">package com.pessoas.Case.Pessoas.domain.model;
+
+
+import com.pessoas.Case.Pessoas.application.exception.RegraDeNegocioException;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+public class Avaliacao {
+
+    private static final double PESO_COMPORTAMENTAL = 0.4;
+    private static final double PESO_ENTREGAS = 0.6;
+
+    private final Colaborador colaborador;
+    private final int numero;
+    private AvaliacaoComportamental comportamental;
+    private List&lt;Desafio&gt; desafios;
+
+<span class="fc" id="L22">    public Avaliacao(Colaborador colaborador, int numero) {</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (colaborador == null) {</span>
+<span class="fc" id="L24">            throw new IllegalArgumentException(&quot;Colaborador não pode ser nulo.&quot;);</span>
+        }
+<span class="fc" id="L26">        this.colaborador = colaborador;</span>
+<span class="fc" id="L27">        this.numero = numero;</span>
+<span class="fc" id="L28">    }</span>
+
+    /**
+     * REGRA DE NEGÓCIO: Adiciona a parte comportamental.
+     */
+    public void setComportamental(AvaliacaoComportamental comportamental) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (comportamental == null) {</span>
+<span class="fc" id="L35">            throw new IllegalArgumentException(&quot;Avaliação comportamental não pode ser nula.&quot;);</span>
+        }
+<span class="fc" id="L37">        this.comportamental = comportamental;</span>
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * REGRA DE NEGÓCIO: Adiciona as entregas (desafios).
+     * Valida a regra &quot;Cadastro de no mínimo 2 e no máximo 4 desafios&quot;.
+     */
+    public void setEntregas(List&lt;Desafio&gt; desafios) {
+<span class="fc bfc" id="L45" title="All 6 branches covered.">        if (desafios == null || desafios.size() &lt; 2 || desafios.size() &gt; 4) {</span>
+<span class="fc" id="L46">            throw new RegraDeNegocioException(&quot;A avaliação deve ter no mínimo 2 e no máximo 4 desafios.&quot;);</span>
+        }
+<span class="fc" id="L48">        this.desafios = desafios;</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * REGRA DE NEGÓCIO: &quot;Cálculo da média ponderada das notas (peso igual para todos os desafios).&quot;
+     * Isso significa uma média aritmética simples da lista de desafios.
+     * @return A média das notas dos desafios, ou 0.0 se não houver desafios.
+     */
+    public double calcularMediaEntregas() {
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">        if (this.desafios == null || this.desafios.isEmpty()) {</span>
+<span class="fc" id="L58">            return 0.0;</span>
+        }
+
+        // &quot;peso igual&quot; = média aritmética simples
+<span class="fc" id="L62">        return this.desafios.stream()</span>
+<span class="fc" id="L63">                .mapToInt(Desafio::getNota)</span>
+<span class="fc" id="L64">                .average()</span>
+<span class="fc" id="L65">                .orElse(0.0);</span>
+    }
+
+    /**
+     * REGRA DE NEGÓCIO: &quot;gerar uma média ponderada da avaliação comportamental&quot;
+     * Delega o cálculo para o objeto AvaliacaoComportamental.
+     * @return A média ponderada, ou 0.0 se não houver avaliação comportamental.
+     */
+    public double calcularMediaComportamental() {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (this.comportamental == null) {</span>
+<span class="fc" id="L75">            return 0.0;</span>
+        }
+<span class="fc" id="L77">        return this.comportamental.calcularMediaPonderada();</span>
+    }
+
+    /**
+     * REGRA DE NEGÓCIO: &quot;Cálculo da nota final de performance (comportamental + entregas).&quot;
+     * Aplica os pesos definidos (40% / 60%) nas médias calculadas.
+     * @return A nota final de performance.
+     */
+    public double calcularNotaFinal() {
+<span class="fc" id="L86">        double notaComportamental = calcularMediaComportamental();</span>
+<span class="fc" id="L87">        double notaEntregas = calcularMediaEntregas();</span>
+
+<span class="fc" id="L89">        return (notaComportamental * PESO_COMPORTAMENTAL) + (notaEntregas * PESO_ENTREGAS);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

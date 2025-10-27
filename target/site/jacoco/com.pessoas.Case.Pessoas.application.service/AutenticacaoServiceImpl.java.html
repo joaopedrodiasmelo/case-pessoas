@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AutenticacaoServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Case-Pessoas</a> &gt; <a href="index.source.html" class="el_package">com.pessoas.Case.Pessoas.application.service</a> &gt; <span class="el_source">AutenticacaoServiceImpl.java</span></div><h1>AutenticacaoServiceImpl.java</h1><pre class="source lang-java linenums">package com.pessoas.Case.Pessoas.application.service;
+
+
+import com.pessoas.Case.Pessoas.application.dto.AuthRequestDTO;
+import com.pessoas.Case.Pessoas.application.dto.AuthResponseDTO;
+import com.pessoas.Case.Pessoas.application.portApi.AutenticacaoUseCase;
+import com.pessoas.Case.Pessoas.security.TokenService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AutenticacaoServiceImpl implements AutenticacaoUseCase {
+
+    private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Value(&quot;${api.security.client.id}&quot;)
+    private String staticClientId;
+    @Value(&quot;${api.security.client.secret}&quot;)
+    private String staticClientSecretHash;
+
+<span class="fc" id="L24">    public AutenticacaoServiceImpl(TokenService tokenService, PasswordEncoder passwordEncoder) {</span>
+<span class="fc" id="L25">        this.tokenService = tokenService;</span>
+<span class="fc" id="L26">        this.passwordEncoder = passwordEncoder;</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public AuthResponseDTO autenticar(AuthRequestDTO dto) {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (!staticClientId.equals(dto.clientId())) {</span>
+<span class="fc" id="L32">            throw new BadCredentialsException(&quot;Credenciais inválidas.&quot;);</span>
+        }
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!passwordEncoder.matches(dto.password(), staticClientSecretHash)) {</span>
+<span class="fc" id="L35">            throw new BadCredentialsException(&quot;Credenciais inválidas.&quot;);</span>
+        }
+<span class="fc" id="L37">        String tokenJwt = tokenService.gerarToken(dto.clientId());</span>
+<span class="fc" id="L38">        return new AuthResponseDTO(tokenJwt);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

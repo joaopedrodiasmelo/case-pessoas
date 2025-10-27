@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColaboradorDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Case-Pessoas</a> &gt; <a href="index.source.html" class="el_package">com.pessoas.Case.Pessoas.application.dto</a> &gt; <span class="el_source">ColaboradorDTO.java</span></div><h1>ColaboradorDTO.java</h1><pre class="source lang-java linenums">package com.pessoas.Case.Pessoas.application.dto;
+
+import jakarta.validation.constraints.*;
+
+import java.time.LocalDate;
+
+<span class="fc" id="L7">public record ColaboradorDTO(</span>
+        @NotBlank(message = &quot;A matrícula não pode ser nula ou vazia.&quot;)
+        @Pattern(regexp = &quot;\\d{9}&quot;, message = &quot;A matrícula deve conter exatamente 9 dígitos numéricos.&quot;)
+        String matricula,
+
+        @NotBlank(message = &quot;O nome não pode ser nulo ou vazio.&quot;)
+        String nome,
+
+        @NotNull(message = &quot;A data de admissão não pode ser nula.&quot;)
+        @PastOrPresent(message = &quot;A data de admissão não pode ser uma data futura.&quot;)
+        LocalDate dataAdmissao,
+
+        @NotBlank(message = &quot;O cargo não pode ser nulo ou vazio.&quot;)
+        String cargo
+) {
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
