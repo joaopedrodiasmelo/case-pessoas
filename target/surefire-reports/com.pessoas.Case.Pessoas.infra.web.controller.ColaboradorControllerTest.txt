@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.pessoas.Case.Pessoas.infra.web.controller.ColaboradorControllerTest
--------------------------------------------------------------------------------
-Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.652 s -- in com.pessoas.Case.Pessoas.infra.web.controller.ColaboradorControllerTest
