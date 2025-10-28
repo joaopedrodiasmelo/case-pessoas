@@ -1,10 +1,9 @@
 version: '3.8'
 
 services:
-
   postgres-db:
     image: postgres:15-alpine
-    container_name: performance_postgres
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -17,9 +16,25 @@ services:
     networks:
       - performance-network
 
+#  case-pessoas-app:
+#    build: .
+#    image: case-pessoas-app:latest
+#    container_name: aplicacao
+#    depends_on:
+#      - postgres-db
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/colaborador_db
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=admin
+#      - LOG_LEVEL_APP=INFO
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - performance-network
+
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: performance_pgadmin
+    container_name: pgadmin
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
