@@ -25,6 +25,11 @@ public class ColaboradorController {
     private final ColaboradorUseCase colaboradorUseCase;
     private final AvaliacaoUseCase avaliacaoUseCase;
 
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
+    }
+
     @PostMapping("/auth/token")
     public ResponseEntity<AuthResponseDTO> autenticar(@RequestBody @Valid AuthRequestDTO dto) {
         log.info(">>> POST /auth/token - clientId: {}", dto.clientId());
